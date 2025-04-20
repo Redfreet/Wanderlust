@@ -27,6 +27,17 @@ module.exports.showListing = async (req, res) => {
   res.render("./listings/show.ejs", { listing });
 };
 
+module.exports.createListing = async (req, res, next) => {
+  let url = req.file.path;
+  let filename = req.file.filename;
+  console.log(url, "..", filename);
+  // const newListing = new Listing(req.body.listing);
+  // newListing.owner = req.user._id;
+  // await newListing.save();
+  req.flash("success", "New Listing Created!");
+  res.redirect("/listings");
+};
+
 module.exports.renderEditForm = async (req, res) => {
   let { id } = req.params;
   const listing = await Listing.findById(id);
@@ -35,14 +46,6 @@ module.exports.renderEditForm = async (req, res) => {
     res.redirect("/listings");
   }
   res.render("./listings/edit.ejs", { listing });
-};
-
-module.exports.createListing = async (req, res, next) => {
-  const newListing = new Listing(req.body.listing);
-  newListing.owner = req.user._id;
-  await newListing.save();
-  req.flash("success", "New Listing Created!");
-  res.redirect("/listings");
 };
 
 module.exports.updateListing = async (req, res) => {
